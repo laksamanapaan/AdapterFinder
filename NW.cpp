@@ -62,6 +62,7 @@ if(L1 > Fx || L2 > Fy)
         dpm_init( F, traceback, L1, L2, d );
 
         // Create alignment
+
         nw_align( F, traceback, seq_1, seq_2, seq_1_al, seq_2_al, d );
 	
 	if(debug == 2)
@@ -111,7 +112,8 @@ int NW::nw_align(
 {
         int        x = 0, y = 0, checkMatch=0;
         int        fU, fD, fL ;
-        char       ptr, nuc ;
+        char       ptr;
+        char       nuc[10000], nuc2[10000] ;
         int        i = 0, j = 0, k = -1*10^9999;
 
         const int  a =  2;   /* Match */
@@ -124,51 +126,59 @@ int NW::nw_align(
 
         int  L1 = seq_1.length();
         int  L2 = seq_2.length();
+        
+        strncpy(nuc, seq_1.c_str(), sizeof(nuc));
+        strncpy(nuc2, seq_2.c_str(), sizeof(nuc));
 
-        for( i = 1; i <= L2; i++ )
+
+        for( i = 0; i < L2; i++ )
         {
-                for( j = 1; j <= L1; j++ )
+                for( j = 0; j < L1; j++ )
                 {  
-                    if (seq_1[j-1]=='N'||seq_2[i-1]=='N'){
-                        checkMatch=0;
-                    }
-                    else{
-                        if (seq_1[j-1]==seq_2[i-1]||seq_2[i-1]==seq_1[j-1]){
+
+                    if (nuc[j]!='N'||nuc2[i]!='N'){
+                        if (nuc[j]==nuc2[i]){
                             checkMatch=a;
                         }
                         else{
                             checkMatch=b;
                         }
                     }
-//                        nuc = seq_1[ j-1 ] ;
-//
+                    else {
+                        checkMatch=0; 
+                    }
+
+//                        nuc = seq_1[j-1] ;
+//                       // cout<<nuc;
 //                        switch( nuc )
 //                        {
 //                                case 'A':  x = 0 ;  break ;
 //                                case 'C':  x = 1 ;  break ;
 //                                case 'G':  x = 2 ;  break ;
-//                                case 'T':  x = 3 ;
+//                                case 'T':  x = 3 ;  
 //                        }
 //
 //                        nuc = seq_2[ i-1 ] ;
-//
+//                        //cout<<nuc2;
 //                        switch( nuc )
 //                        {
 //                                case 'A':  y = 0 ;  break ;
 //                                case 'C':  y = 1 ;  break ;
 //                                case 'G':  y = 2 ;  break ;
 //                                case 'T':  y = 3 ;
-//                        }
-
-                        fD = F[ i-1 ][ j-1 ] + checkMatch;//s[ x ][ y ] ;
-                        fU = F[ i-1 ][ j ] - d ;
-                        fL = F[ i ][ j-1 ] - d ;
+//                       }
+                  
+                        
+                        fD = F[ i ][ j ] + checkMatch ;
+                        fU = F[ i ][ j+1 ] - d ;
+                        fL = F[ i+1 ][ j ] - d ;
               
-                        F[ i ][ j ] = max( fU, fD, fL, ptr ) ;
+                        F[ i+1 ][ j+1 ] = max( fU, fD, fL, ptr ) ;
 
-                        traceback[ i ][ j ] =  ptr ;
-                      
+                        traceback[ i+1 ][ j+1 ] =  ptr ; 
                 }
+               // cout<<s[x][y]<<endl;
+               // cout<<checkMatch<<endl<<endl;
         }
         i-- ; j-- ;
 
