@@ -25,8 +25,8 @@ void help();
 int main(int argc, char *argv[]) 
 {	
     //ProfilerStart("result.prof");
-	string file1 = "Breast1_R1_001.fastq", file2 = "Breast1_R2_001.fastq", seq_1, seq_2, seq_1_al, seq_2_al;
-  	int opt = 0, seqLength = 0, debugLevel = 0, check=0;
+	string file1 = "cuba.txt", file2 = "cuba2.txt", seq_1, seq_2, seq_1_al, seq_2_al;
+  	int opt = 0, seqLength = 0, debugLevel = 0; //check=0;
   	double percentage = 0, confLevel = .0;
   	bool option = false;
   	int rowmax = 0, colmax = 0, confTrue, adapLenCount = 0, iteration = 0;
@@ -172,8 +172,8 @@ int main(int argc, char *argv[])
                // cout<<confTrue<<endl;
                 
 		adapLenCount++;
-                check++;
-                cout<<check;
+//                check++;
+//                cout<<check;
 		if(confTrue == 2)
 		{
 			cout <<"\n";
