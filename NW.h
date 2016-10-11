@@ -42,7 +42,7 @@ private:
 	 * @param f3 The value from Left Cell
 	 * @param ptr Returns the symbol for the traceback matrix
 	 */
-	int max( int f1, int f2, int f3, char &  ptr);
+	void max(int i, int j, int checkMatch, int d, int ** F,char ** traceback);
 	/** Prints out the dynamic programming matrix
 	 * @param F The dynamic programming matrix
 	 * @param seq_1 Read 1 in the first fastq file

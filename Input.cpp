@@ -47,15 +47,20 @@ int Input::complementInput(string& seq)
 {
         for(int reverse = 0; reverse < seq.length(); reverse++)
         {
-
-               if(seq[reverse] == 'A'){
-                      seq[reverse] = 'T';}
-               else if(seq[reverse] == 'T'){
-                      seq[reverse] = 'A';}
-               else if(seq[reverse] == 'C'){
-                      seq[reverse] = 'G';}
-               else if(seq[reverse] == 'G'){
-                      seq[reverse] = 'C';}
-        }
+//               if(seq[reverse] == 'A'){
+//                      seq[reverse] = 'T';}
+//               else if(seq[reverse] == 'T'){
+//                      seq[reverse] = 'A';}
+//               else if(seq[reverse] == 'C'){
+//                      seq[reverse] = 'G';}
+//               else if(seq[reverse] == 'G'){
+//                      seq[reverse] = 'C';}
+            switch(seq[reverse]){
+                case 'A': seq[reverse]='T';break;
+                case 'T': seq[reverse]='A';break;
+                case 'G': seq[reverse]='C';break;
+                case 'C': seq[reverse]='G';
+            }
+        }      
 	return 0;
 }

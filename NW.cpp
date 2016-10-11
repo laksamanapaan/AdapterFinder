@@ -110,19 +110,19 @@ int NW::nw_align(
               int        d         
             )
 {
-        int        x = 0, y = 0, checkMatch=0;
-        int        fU, fD, fL ;
-        char       ptr;
+        int        checkMatch=0;  //x = 0, y = 0, 
+        //int        fU, fD, fL ;
+        //char       ptr;
         char       nuc[10000], nuc2[10000] ;
         int        i = 0, j = 0, k = -1*10^9999;
 
         const int  a =  2;   /* Match */
         const int  b = -1;   /* Mismatch */
 
-        const int  s[ 4 ][ 4 ] = { { a, b, b, b },    /* Substitution matrix */
-                                   { b, a, b, b },
-                                   { b, b, a, b },
-                                   { b, b, b, a } } ;
+//        const int  s[ 4 ][ 4 ] = { { a, b, b, b },    /* Substitution matrix */
+//                                   { b, a, b, b },
+//                                   { b, b, a, b },
+//                                   { b, b, b, a } } ;
 
         int  L1 = seq_1.length();
         int  L2 = seq_2.length();
@@ -147,6 +147,8 @@ int NW::nw_align(
                     else {
                         checkMatch=0; 
                     }
+                    
+                    max(i, j, checkMatch, d, F, traceback);
 
 //                        nuc = seq_1[j-1] ;
 //                       // cout<<nuc;
@@ -169,13 +171,13 @@ int NW::nw_align(
 //                       }
                   
                         
-                        fD = F[ i ][ j ] + checkMatch ;
-                        fU = F[ i ][ j+1 ] - d ;
-                        fL = F[ i+1 ][ j ] - d ;
-              
-                        F[ i+1 ][ j+1 ] = max( fU, fD, fL, ptr ) ;
-
-                        traceback[ i+1 ][ j+1 ] =  ptr ; 
+//                        fD = F[ i ][ j ] + checkMatch ;
+//                        fU = F[ i ][ j+1 ] - d ;
+//                        fL = F[ i+1 ][ j ] - d ;
+//              
+//                        F[ i+1 ][ j+1 ] = max( fU, fD, fL, ptr ) ;
+//
+//                        traceback[ i+1 ][ j+1 ] =  ptr ; 
                 }
                // cout<<s[x][y]<<endl;
                // cout<<checkMatch<<endl<<endl;
@@ -227,27 +229,47 @@ int NW::nw_align(
         return  0 ;
 }
 
-int  NW::max( int f1, int f2, int f3, char & ptr )     
+void  NW::max( int i, int j, int checkMatch, int d, int ** F,char ** traceback)     
 {                                                      
-        int  max = 0 ;                                
+        int  max = 0, f1, f2, f3 ;                                
+        char ptr;
+//        if( f1 >= f2 && f1 >= f3 )  
+//        {
+//                max = f1 ;
+//                ptr = '|' ;
+//        }
+//        else if( f2 > f3 )              
+//        {
+//                max = f2 ;
+//                ptr = '\\' ;
+//        }
+//        else
+//        {
+//                max = f3 ;
+//                ptr = '-' ;
+//        }
+        f2 = F[ i ][ j ] + checkMatch ;
+        f1 = F[ i ][ j+1 ] - d ;
+        f3 = F[ i+1 ][ j ] - d ;
 
-        if( f1 >= f2 && f1 >= f3 )  
-        {
-                max = f1 ;
-                ptr = '|' ;
+        if (f2>=f1 && f2>=f3){
+            max=f2;
+            ptr='\\';
         }
-        else if( f2 > f3 )              
-        {
-                max = f2 ;
-                ptr = '\\' ;
+        else if (f1>f3){
+            max=f1;
+            ptr='|';
         }
-        else
-        {
-                max = f3 ;
-                ptr = '-' ;
+        else{
+        max=f3;
+        ptr='-';
         }
         
-        return  max ;   
+                      
+        F[ i+1 ][ j+1 ] = max;
+
+        traceback[ i+1 ][ j+1 ] =  ptr ; 
+        
 }
 
 void  NW::print_matrix( int ** F, string seq_1, string seq_2 )
